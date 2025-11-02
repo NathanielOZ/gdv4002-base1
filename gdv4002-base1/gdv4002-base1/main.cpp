@@ -7,7 +7,8 @@ void myUpdate(GLFWwindow* window, double tDelta);
 int main(void) {
 
 	// Initialise the engine (create window, setup OpenGL backend)
-	int initResult = engineInit("GDV4002 - Applied Maths for Games", 1024, 1024);
+	//1024,1024 512,512
+	int initResult = engineInit("GDV4002 - Applied Maths for Games", 1024, 1024, 5.0f);
 
 	// If the engine initialisation failed report error and exit
 	if (initResult != 0) {
@@ -20,10 +21,6 @@ int main(void) {
 	// Setup game scene objects here
 	//
 	float pi = 3.14f;
-
-	float anglesPerSecond = glm::radians(45.0f);
-
-	float playerVelocity = 2.0f;
 
 	GameObject2D* addObject(
 		const char* name, 
@@ -49,31 +46,39 @@ int main(void) {
 		TextureProperties::NearestFilterTexture()
 		);
 
-	GameObject2D* Player1Object = getObject("Player1");
+	GameObject2D* player1Object = getObject("Player1");
 
-	if (Player1Object != nullptr) {
+	if (player1Object != nullptr) {
 	
-		Player1Object->position = glm::vec2(-1.0f, 1.0f);
-		Player1Object->orientation = glm::radians(-30.0f);
-		Player1Object->size = glm::vec2(0.32f,0.32f);
-		Player1Object->textureID = loadTexture("Resources\\Textures\\player1_ship.png");
+		player1Object->position = glm::vec2(-1.0f, 1.0f);
+		player1Object->orientation = glm::radians(-30.0f);
+		player1Object->size = glm::vec2(0.64f,0.64f);
+		player1Object->textureID = loadTexture("Resources\\Textures\\player1_ship.png");
 
 	}
 
-	GameObject2D* Player2Object = getObject("Player2");
+	GameObject2D* player2Object = getObject("Player2");
 
-	if (Player2Object != nullptr) {
+	if (player2Object != nullptr) {
 
-		Player2Object->position = glm::vec2(1.5f, 1.0f);
-		Player2Object->orientation = glm::radians(45.0f);
-		Player2Object->textureID = loadTexture("Resources\\Textures\\bumblebee.png");
+		player2Object->position = glm::vec2(1.5f, 1.0f);
+		player2Object->orientation = glm::radians(45.0f);
+		player2Object->textureID = loadTexture("Resources\\Textures\\bumblebee.png");
 
 	}
+	
+	float anglesPerSecond = glm::radians(45.0f);
+	
+	float playerVelocity = 2.0f;
 
+	
+	setUpdateFunction(myUpdate);
+
+	
 	// Enter main loop - this handles update and render calls
 	engineMainLoop();	
 
-	setUpdateFunction(myUpdate);
+	
 
 	// When we quit (close window for example), clean up engine resources
 	engineShutdown();
@@ -84,10 +89,19 @@ int main(void) {
 
 void myUpdate(GLFWwindow* window, double tDelta) {
 
-	float player1RotationSpeed = glm::radians(90.0f);
+	setViewplaneWidth(20.0f); //bigger number zoom out, smaller number zoom in, negative number flip upside down
 
-	GameObject2D* Player1 = getObject("Player1");
+	float player1RotationSpeed = glm::radians(-90.0f);
+	
+	GameObject2D* player1Object = getObject("Player1");
+	
+	player1Object->orientation += player1RotationSpeed * tDelta;
+	
+	float player2RotationSpeed = glm::radians(90.0f);
 
-	Player1->orientation += player1RotationSpeed * tDelta;
+	GameObject2D* player2Object = getObject("Player2");
 
+	player2Object->orientation += player2RotationSpeed * tDelta;
+	
+	
 }
