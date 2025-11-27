@@ -43,14 +43,14 @@ int main(void) {
 	GLuint playerTexture = loadTexture("Resources\\Textures\\player1_ship.png");
 
 	Player* mainPlayer = new Player(glm::vec2(-1.5f, 0.0f), 0.0f,
-		glm::vec2(0.5f, 0.5f),
-		playerTexture, 1.0f, 2.0f);
+		glm::vec2(0.5f, 0.5f) /*Size value*/,
+		playerTexture, 1.0f /*Mass value*/, 2.0f /*Thrust value*/, 5.0f /*BoostThrust value*/);
 
 	addObject("player", mainPlayer);
 	
 	GLuint enemyTexture = loadTexture("Resources\\Textures\\alien01.png");
-
-	Enemy* enemy1 = new Enemy(glm::vec2(0.0f, 0.0f),
+	
+	Enemy* enemy1 = new Enemy(glm::vec2(-1.0f, 0.0f),
 		0.0f,
 		glm::vec2(0.5f, 0.5f),
 		enemyTexture,
@@ -59,7 +59,7 @@ int main(void) {
 
 	Enemy* enemy2 = new Enemy(glm::vec2(1.0f, 0.0f),
 		0.0f,
-		glm::vec2(0.5f, 0.5f),
+		glm::vec2(1.0f, 1.0f),
 		enemyTexture,
 		0.0f,
 		glm::radians(45.0f));
@@ -253,6 +253,14 @@ void myKeyboardHandler(GLFWwindow* window, int key, int scancode, int action, in
 		case GLFW_KEY_A:
 			keys[Key::A] = true;
 			break;
+
+		case GLFW_KEY_LEFT_SHIFT:
+			keys[Key::LEFTSHIFT] = true;
+			break;
+
+		case GLFW_KEY_SPACE:
+			keys[Key::SPACE] = true;
+			break;
 		}
 	}
 	
@@ -278,8 +286,14 @@ void myKeyboardHandler(GLFWwindow* window, int key, int scancode, int action, in
 		case GLFW_KEY_A:
 			keys[Key::A] = false;
 			break;
+
+		case GLFW_KEY_LEFT_SHIFT:
+			keys[Key::LEFTSHIFT] = false;
+			break;
+
+		case GLFW_KEY_SPACE:
+			keys[Key::SPACE] = false;
+			break;
 		}
 	}
-
-
 }

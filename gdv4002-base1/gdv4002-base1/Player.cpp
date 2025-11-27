@@ -1,5 +1,6 @@
 #include "Player.h"
 #include "Keys.h"
+#include "Enemy.h"
 #include "Engine.h"
 #include <bitset>
 
@@ -12,7 +13,8 @@ Player::Player(glm::vec2 initPosition,
 	glm::vec2 initSize,
 	GLuint initTextureID,
 	float mass,
-	float thrust) :
+	float thrust,
+	float boostThrust) :
 	GameObject2D(initPosition, initOrientation, initSize, initTextureID)
 {
 	this->mass = mass;
@@ -22,6 +24,8 @@ Player::Player(glm::vec2 initPosition,
 	inverseMass = glm::vec2(1.0f / mass);
 
 	this->thrust = thrust;
+
+	this->boostThrust = boostThrust;
 }
 void Player::update(double tDelta)
 {
@@ -31,39 +35,55 @@ void Player::update(double tDelta)
 	if (keys.test(Key::W) == true)
 	{
 		F += glm::vec2(0.0f, thrust);
+		orientation = glm::radians(90.0f);
 	}
 	else if (keys.test(Key::S) == true)
 	{
 		F += glm::vec2(0.0f, -thrust);
+		orientation = glm::radians(-90.0f);
 	}
 	if (keys.test(Key::D) == true)
 	{
 		F += glm::vec2(thrust, 0.0f);
+		orientation = glm::radians(0.0f);
 	}
 	else if (keys.test(Key::A) == true)
 	{
 		F += glm::vec2(-thrust, 0.0f);
+		orientation = glm::radians(180.0f);
 	}
-
+	/*
+	if (keys.test(Key::SPACE) == true)
+	{
+		F + glm::vec2(boostThrust,0.0f);
+	}
+	*/
+	/*
+	if (keys.test(Key::LEFTSHIFT) == true)
+	{
+		printf("\nLEFT_SHIFT");
+	}
+	*/
 	F += gravity;
-
-	if (position.y < -getViewplaneHeight() / 2.0f)
+	
+	if (position.y < -getViewplaneHeight() / 2.1f)
 	{
 		F += glm::vec2(0.0f, 200.0f);
 	}
-	if (position.y > getViewplaneHeight() / 2.0f)
+	if (position.y > getViewplaneHeight() / 2.1f)
 	{
 		F += glm::vec2(0.0f, -200.0f);
 	}
-	if (position.x < -getViewplaneWidth() / 2.0f)
+	if (position.x < -getViewplaneWidth() / 1.5f)
 	{
-		F += glm::vec2(200.0f, 0.0f);
+		position.x = getViewplaneWidth() / 1.5f;
 	}
-	if (position.x > getViewplaneWidth() / 2.0f)
+	if (position.x > getViewplaneWidth() / 1.5f)
 	{
-		F += glm::vec2(-200.0f, 0.0f);
+		position.x = -getViewplaneWidth() / 1.5f;
 	}
-	/* calculate acceleration. If F = ma, a =F/m */
+
+	/* calculate acceleration. If F = ma, a = F/m */
 	glm::vec2 a = F * inverseMass;
 
 	/* integate to get new velocity */
