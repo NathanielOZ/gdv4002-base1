@@ -2,6 +2,7 @@
 #include "Keys.h"
 #include "Player.h"
 #include "Enemy.h"
+#include "Emitter.h"
 #include <bitset>
 
 //gobal variables
@@ -14,7 +15,7 @@
 
 std::bitset<5> keys{ 0x0 };
 
-glm::vec2 gravity = glm::vec2(0.0f, -0.5f);
+glm::vec2 gravity = glm::vec2(0.0f, -0.005f);
 
 // Function prototypes
 
@@ -48,6 +49,13 @@ int main(void) {
 
 	addObject("player", mainPlayer);
 	
+	Emitter* emitter = new Emitter(glm::vec2(0.0f,
+		getViewplaneHeight() / 2.0f * 1.2f),
+		glm::vec2(getViewplaneWidth() / 2.0f, 0.0f),
+		0.05f);
+
+	addObject("emitter", emitter);
+
 	GLuint enemyTexture = loadTexture("Resources\\Textures\\alien01.png");
 	
 	Enemy* enemy1 = new Enemy(glm::vec2(-1.0f, 0.0f),
@@ -70,6 +78,7 @@ int main(void) {
 		enemyTexture,
 		0.0f,
 		glm::radians(45.0f));
+
 
 	// Add enemy objects to the engine
 
@@ -164,6 +173,7 @@ int main(void) {
 	// return success :)
 	return 0;
 }
+
 
 //void myUpdate(GLFWwindow* window, double tDelta)
 //{
