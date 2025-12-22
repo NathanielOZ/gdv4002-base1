@@ -14,20 +14,19 @@ private:
 
 	GLuint snowflakes[8];
 
+	// Randomw number generator
 	std::mt19937 gen;
 
-	std::uniform_int_distribution<int> spriteDist;
-
-	std::uniform_real_distribution<float> normDist; // -1 to +1
-
+	//Random number distributions
+	std::uniform_int_distribution<int> spriteDist; // random integer for particle sprite selection
+	std::uniform_real_distribution<float> normDist; // -1 tp 1
 	std::uniform_real_distribution<float> massDist, scaleDist;
 
 public:
 
-	Emitter(glm::vec2 initPosition,
-		glm::vec2 initSize,
-		float emitTimeInterval);
+	Emitter(glm::vec2 initPosition, glm::vec2 initSize, float emitTimeInterval);
 
 	void update(double tDelta) override;
 	void render() override;
+
 };

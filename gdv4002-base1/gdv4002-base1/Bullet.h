@@ -1,24 +1,21 @@
 #pragma once
 
-// Model snowflake particle
-
 #include "GameObject2D.h"
 
-class Snowflake : public GameObject2D
+class Bullet : public GameObject2D
 {
 private:
 	float mass;
 	glm::vec2 velocity;
-	float angleChangePerSecond;
+	glm::vec2 inverseMass;
+	
 
 public:
-	Snowflake(glm::vec2 initPosition,
+	Bullet(glm::vec2 initPosition,
 		float initOrientation,
 		glm::vec2 initSize,
 		GLuint initTextureID,
-		float mass,
-		float angleChangePerSecond);
-
+		float mass, glm::vec2 velocity);
+	
 	void update(double tDelta) override;
-
 };

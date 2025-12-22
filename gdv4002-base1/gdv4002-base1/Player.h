@@ -8,7 +8,7 @@ class Player : public GameObject2D
 		glm::vec2 velocity;
 		glm::vec2 inverseMass;
 		float thrust;
-		float boostThrust;
+		//float boostThrust;
 
 	public:
 		Player(glm::vec2 initPosition,
@@ -16,8 +16,8 @@ class Player : public GameObject2D
 			glm::vec2 initSize,
 			GLuint initTextureID,
 			float mass,
-			const float thrust,
-			const float boostThrust);
+			const float thrust
+			/*const float boostThrust*/);
 
 		void update(double tDelta) override;
 };

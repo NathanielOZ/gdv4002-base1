@@ -2,7 +2,9 @@
 #include "Keys.h"
 #include "Player.h"
 #include "Enemy.h"
+#include "Bullet.h"
 #include "Emitter.h"
+#include "glPrint.h"
 #include <bitset>
 
 //gobal variables
@@ -17,11 +19,22 @@ std::bitset<5> keys{ 0x0 };
 
 glm::vec2 gravity = glm::vec2(0.0f, -0.005f);
 
+GLuint myFontNormal = 0;
+GLuint myFontUnderline = 0;
+
+
 // Function prototypes
 
 //void myUpdate(GLFWwindow* window, double tDelta);
 void myKeyboardHandler(GLFWwindow* window, int key, int scancode, int action, int mods);
 
+void deleteSnowflakes(GLFWwindow* window, double tDelta);
+
+void deleteBullet(GLFWwindow* window, double tDelta);
+
+//void myRender(GLFWwindow* window);
+
+//void displayScore(Player* player);
 
 int main(void) {
 
@@ -29,7 +42,22 @@ int main(void) {
 	//1024,1024 512,512
 	int initResult = engineInit("GDV4002 - Applied Maths for Games", 1024, 1024, 5.0f);
 
+	if (initResult != 0)
+	{
+		printf("Cannot setup game window\n");
+		return initResult; // exit if setup failed
+	}
+
 	setViewplaneWidth(10.0f); //bigger number zoom out, smaller number zoom in, negative number flip upside down
+
+	myFontNormal = glBuildFont(L"Consolas", 24);
+	myFontUnderline = glBuildFont(L"Aptos", 24, GLFONT_STYLE::BOLD| GLFONT_STYLE::UNDERLINE);
+
+
+	// Setup rendering properties (enable blending) 
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);// Enable alpha blending and set the depth test
+	glDepthFunc(GL_ALWAYS);
 
 	// If the engine initialisation failed report error and exit
 	if (initResult != 0) {
@@ -45,12 +73,12 @@ int main(void) {
 
 	Player* mainPlayer = new Player(glm::vec2(-1.5f, 0.0f), 0.0f,
 		glm::vec2(0.5f, 0.5f) /*Size value*/,
-		playerTexture, 1.0f /*Mass value*/, 2.0f /*Thrust value*/, 5.0f /*BoostThrust value*/);
+		playerTexture, 1.0f /*Mass value*/, 2.0f /*Thrust value*/ /*5.0f*/ /*BoostThrust value*/);
 
 	addObject("player", mainPlayer);
 	
-	Emitter* emitter = new Emitter(glm::vec2(0.0f,
-		getViewplaneHeight() / 2.0f * 1.2f),
+	Emitter* emitter = new Emitter(
+		glm::vec2(0.0f, getViewplaneHeight() / 2.0f * 1.2f),
 		glm::vec2(getViewplaneWidth() / 2.0f, 0.0f),
 		0.05f);
 
@@ -159,6 +187,11 @@ int main(void) {
 	//setUpdateFunction(myUpdate);
 
 	setKeyboardHandler(myKeyboardHandler);
+
+	//setRenderFunction(myRender);
+
+	setUpdateFunction(deleteSnowflakes, false);
+	//setUpdateFunction(deleteBullet);
 
 	//listGameObjectKeys(); // checks the number of objects rendered in the game
 
@@ -306,4 +339,59 @@ void myKeyboardHandler(GLFWwindow* window, int key, int scancode, int action, in
 			break;
 		}
 	}
+}
+
+void deleteSnowflakes(GLFWwindow* window, double tDelta)
+{
+	GameObjectCollection snowflakes = getObjectCollection("snowflake");
+
+	for (int i = 0; i < snowflakes.objectCount; i++)
+	{
+		if (snowflakes.objectArray[i]->position.y < -(getViewplaneHeight() / 2.0f))
+		{
+			deleteObject(snowflakes.objectArray[i]);
+		}
+	}
+}
+
+//void myRender(GLFWwindow* window)
+//{
+//	glSetCurrentFont(myFontUnderline);
+//	
+//	glColor3f(1.0f, 1.0f, 1.0f);
+//
+//	glRasterPos2f(1.0f, 0.0f);
+//
+//	glPrint("Hello, World");
+//}
+
+//void displayScore(Player* player)
+//{
+//}
+
+void deleteBullet(GLFWwindow* window, double tDelta)
+{
+	//GameObjectCollection bullet = getObjectCollection("bullet");
+	//
+	//for (int i = 0; i < bullet.objectCount; i++)
+	//{
+	//	if (bullet.objectArray[i]->position.y < -(getViewplaneHeight() / 2.1f))
+	//	{
+	//		deleteObject(bullet.objectArray[i]);
+	//	}
+	//	if (bullet.objectArray[i]->position.y < (getViewplaneHeight() / 2.1f))
+	//	{
+	//		deleteObject(bullet.objectArray[i]);
+	//	}
+	//	if (bullet.objectArray[i]->position.x < -(getViewplaneWidth() / 1.5f))
+	//	{
+	//		deleteObject(bullet.objectArray[i]);
+	//	}
+	//	if (bullet.objectArray[i]->position.x < (getViewplaneWidth() / 1.5f))
+	//	{
+	//		deleteObject(bullet.objectArray[i]);
+	//	}
+	//}
+
+
 }
