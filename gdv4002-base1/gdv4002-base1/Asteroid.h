@@ -2,15 +2,28 @@
 
 #include "GameObject2D.h"
 
+
 class Asteroid : public GameObject2D
 {
 private:
-	unsigned long long asteroidNumber;
+	
+	float mass;
+	glm::vec2 velocity;
+	float angleChangePerSecond;
+	float xVelocity;
+	float yVelocity;
+	float maxVelocity;
+	float minVelocity;
+
 public:
-	Asteroid(glm::vec2 initPotition,
+	Asteroid(glm::vec2 initPosition,
 		float initOrientation,
 		glm::vec2 initSize,
-		GLuint initTextureID);
+		GLuint initTextureID,
+		float mass,
+		float angleChangePerSecond,
+		float xVelocity,
+		float yVelocity);
 
 	void update(double tDelta) override;
 

@@ -1,5 +1,4 @@
 #include "Bullet.h"
-#include "Engine.h"
 
 extern glm::vec2 gravity;
 
@@ -31,22 +30,5 @@ void Bullet::update(double tDelta)
 
 	/* integate to get new posistion */
 	position = position + (velocity * (float)tDelta);
-
-	//if (position.y < -getViewplaneHeight() / 2.1f)
-	//{
-	//	//deleteObject();
-	//}
-	//if (position.y > getViewplaneHeight() / 2.1f)
-	//{
-	//	position.y = -getViewplaneHeight() / 2.1f;
-	//}
-	//if (position.x < -getViewplaneWidth() / 1.5f)
-	//{
-	//	position.x = getViewplaneWidth() / 1.5f;
-	//}
-	//if (position.x > getViewplaneWidth() / 1.5f)
-	//{
-	//	position.x = -getViewplaneWidth() / 1.5f;
-	//}
 
 }

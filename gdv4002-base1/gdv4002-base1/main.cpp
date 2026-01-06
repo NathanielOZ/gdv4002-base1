@@ -4,6 +4,7 @@
 #include "Enemy.h"
 #include "Bullet.h"
 #include "Emitter.h"
+#include "AsteroidEmitter.h"
 #include "glPrint.h"
 #include <bitset>
 
@@ -18,6 +19,8 @@
 std::bitset<5> keys{ 0x0 };
 
 glm::vec2 gravity = glm::vec2(0.0f, -0.005f);
+float xGravity = 0.0f;
+float yGravity = -0.005f;
 
 GLuint myFontNormal = 0;
 GLuint myFontUnderline = 0;
@@ -28,9 +31,12 @@ GLuint myFontUnderline = 0;
 //void myUpdate(GLFWwindow* window, double tDelta);
 void myKeyboardHandler(GLFWwindow* window, int key, int scancode, int action, int mods);
 
-void deleteSnowflakes(GLFWwindow* window, double tDelta);
+//void deleteSnowflakes(GLFWwindow* window, double tDelta);
 
-void deleteBullet(GLFWwindow* window, double tDelta);
+//void deleteAsteroids(GLFWwindow* window, double tDelta);
+
+void deleteObjects(GLFWwindow* window, double tDelta);
+
 
 //void myRender(GLFWwindow* window);
 
@@ -73,47 +79,54 @@ int main(void) {
 
 	Player* mainPlayer = new Player(glm::vec2(-1.5f, 0.0f), 0.0f,
 		glm::vec2(0.5f, 0.5f) /*Size value*/,
-		playerTexture, 1.0f /*Mass value*/, 2.0f /*Thrust value*/ /*5.0f*/ /*BoostThrust value*/);
+		playerTexture, 1.0f /*Mass value*/, 2.0f /*Thrust value*/, 0.5f /*Cooldown value*/ /*5.0f*/ /*BoostThrust value*/);
 
 	addObject("player", mainPlayer);
 	
-	Emitter* emitter = new Emitter(
-		glm::vec2(0.0f, getViewplaneHeight() / 2.0f * 1.2f),
-		glm::vec2(getViewplaneWidth() / 2.0f, 0.0f),
-		0.05f);
-
-	addObject("emitter", emitter);
-
-	GLuint enemyTexture = loadTexture("Resources\\Textures\\alien01.png");
+	//Emitter* emitter = new Emitter(
+	//	glm::vec2(0.0f, getViewplaneHeight() / 2.0f * 1.2f),
+	//	glm::vec2(getViewplaneWidth() / 2.0f, 0.0f),
+	//	0.05f);
+	//
+	//addObject("emitter", emitter);
 	
-	Enemy* enemy1 = new Enemy(glm::vec2(-1.0f, 0.0f),
-		0.0f,
-		glm::vec2(0.5f, 0.5f),
-		enemyTexture,
-		0.0f,
-		glm::radians(45.0f));
+	AsteroidEmitter* asteroidEmitter = new AsteroidEmitter(
+		glm::vec2(0.0f, getViewplaneHeight() / 2.0f * 1.2f),
+		glm::vec2(getViewplaneWidth() / 2.0f, 1.0f),
+		0.6f);
+	
+	addObject("asteroidEmitter", asteroidEmitter);
 
-	Enemy* enemy2 = new Enemy(glm::vec2(1.0f, 0.0f),
-		0.0f,
-		glm::vec2(1.0f, 1.0f),
-		enemyTexture,
-		0.0f,
-		glm::radians(45.0f));
-
-	Enemy* enemy3 = new Enemy(glm::vec2(2.0f, 0.0f),
-		0.0f,
-		glm::vec2(0.5f, 0.5f),
-		enemyTexture,
-		0.0f,
-		glm::radians(45.0f));
+	//GLuint enemyTexture = loadTexture("Resources\\Textures\\alien01.png");
+	//
+	//Enemy* enemy1 = new Enemy(glm::vec2(-1.0f, 0.0f),
+	//	0.0f,
+	//	glm::vec2(0.5f, 0.5f),
+	//	enemyTexture,
+	//	0.0f,
+	//	glm::radians(45.0f));
+	//
+	//Enemy* enemy2 = new Enemy(glm::vec2(1.0f, 0.0f),
+	//	0.0f,
+	//	glm::vec2(1.0f, 1.0f),
+	//	enemyTexture,
+	//	0.0f,
+	//	glm::radians(45.0f));
+	//
+	//Enemy* enemy3 = new Enemy(glm::vec2(2.0f, 0.0f),
+	//	0.0f,
+	//	glm::vec2(0.5f, 0.5f),
+	//	enemyTexture,
+	//	0.0f,
+	//	glm::radians(45.0f));
 
 
 	// Add enemy objects to the engine
 
-	addObject("enemy1", enemy1);
-	addObject("enemy2", enemy2);
-	addObject("enemy3", enemy3);
-
+	//addObject("enemy1", enemy1);
+	//addObject("enemy2", enemy2);
+	//addObject("enemy3", enemy3);
+	
 	//float pi = 3.14f;
 	//
 	//
@@ -190,8 +203,9 @@ int main(void) {
 
 	//setRenderFunction(myRender);
 
-	setUpdateFunction(deleteSnowflakes, false);
-	//setUpdateFunction(deleteBullet);
+	//setUpdateFunction(deleteSnowflakes, false);
+	//setUpdateFunction(deleteAsteroids, false);
+	setUpdateFunction(deleteObjects, false);
 
 	//listGameObjectKeys(); // checks the number of objects rendered in the game
 
@@ -341,18 +355,30 @@ void myKeyboardHandler(GLFWwindow* window, int key, int scancode, int action, in
 	}
 }
 
-void deleteSnowflakes(GLFWwindow* window, double tDelta)
-{
-	GameObjectCollection snowflakes = getObjectCollection("snowflake");
+//void deleteSnowflakes(GLFWwindow* window, double tDelta)
+//{
+//	GameObjectCollection snowflakes = getObjectCollection("snowflake");
+//
+//	for (int i = 0; i < snowflakes.objectCount; i++)
+//	{
+//		if (snowflakes.objectArray[i]->position.y < -(getViewplaneHeight() / 2.0f))
+//			deleteObject(snowflakes.objectArray[i]);
+//
+//	}
+//}
 
-	for (int i = 0; i < snowflakes.objectCount; i++)
-	{
-		if (snowflakes.objectArray[i]->position.y < -(getViewplaneHeight() / 2.0f))
-		{
-			deleteObject(snowflakes.objectArray[i]);
-		}
-	}
-}
+//void deleteAsteroids(GLFWwindow* window, double tDelta)
+//{
+//	GameObjectCollection asteroids = getObjectCollection("asteroid");
+//
+//	for (int i = 0; i < asteroids.objectCount; i++)
+//	{
+//		if (asteroids.objectArray[i]->position.y < -getViewplaneHeight())
+//			deleteObject(asteroids.objectArray[i]);
+//
+//	}
+//
+//}
 
 //void myRender(GLFWwindow* window)
 //{
@@ -369,29 +395,25 @@ void deleteSnowflakes(GLFWwindow* window, double tDelta)
 //{
 //}
 
-void deleteBullet(GLFWwindow* window, double tDelta)
+void deleteObjects(GLFWwindow* window, double tDelta)
 {
-	//GameObjectCollection bullet = getObjectCollection("bullet");
+	GameObjectCollection bullet = getObjectCollection("bullet");
+	
+	for (int i = 0; i < bullet.objectCount; i++)
+	{
+		if (bullet.objectArray[i]->position.y < -getViewplaneHeight() || bullet.objectArray[i]->position.y > getViewplaneHeight() || bullet.objectArray[i]->position.x < -getViewplaneWidth() || bullet.objectArray[i]->position.x > getViewplaneWidth())
+		{
+			deleteObject(bullet.objectArray[i]);
+			printf("bullet delete\n");
+		}
+	}
+
+	//GameObjectCollection asteroids = getObjectCollection("asteroid");
 	//
-	//for (int i = 0; i < bullet.objectCount; i++)
+	//for (int i = 0; i < asteroids.objectCount; i++)
 	//{
-	//	if (bullet.objectArray[i]->position.y < -(getViewplaneHeight() / 2.1f))
-	//	{
-	//		deleteObject(bullet.objectArray[i]);
-	//	}
-	//	if (bullet.objectArray[i]->position.y < (getViewplaneHeight() / 2.1f))
-	//	{
-	//		deleteObject(bullet.objectArray[i]);
-	//	}
-	//	if (bullet.objectArray[i]->position.x < -(getViewplaneWidth() / 1.5f))
-	//	{
-	//		deleteObject(bullet.objectArray[i]);
-	//	}
-	//	if (bullet.objectArray[i]->position.x < (getViewplaneWidth() / 1.5f))
-	//	{
-	//		deleteObject(bullet.objectArray[i]);
-	//	}
+	//	if (asteroids.objectArray[i]->position.y < -getViewplaneHeight())
+	//		deleteObject(asteroids.objectArray[i]);
+	//
 	//}
-
-
 }

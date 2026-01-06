@@ -135,6 +135,7 @@ copy "$(SolutionDir)Libs\FreeImage\Wrapper\FreeImagePlus\dist\x64\FreeImagePlus.
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Asteroid.cpp" />
+    <ClCompile Include="AsteroidEmitter.cpp" />
     <ClCompile Include="Bullet.cpp" />
     <ClCompile Include="Emitter.cpp" />
     <ClCompile Include="Enemy.cpp" />
@@ -151,6 +152,7 @@ copy "$(SolutionDir)Libs\FreeImage\Wrapper\FreeImagePlus\dist\x64\FreeImagePlus.
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Asteroid.h" />
+    <ClInclude Include="AsteroidEmitter.h" />
     <ClInclude Include="Bullet.h" />
     <ClInclude Include="Emitter.h" />
     <ClInclude Include="Enemy.h" />
