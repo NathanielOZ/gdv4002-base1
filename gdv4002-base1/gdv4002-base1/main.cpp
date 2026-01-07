@@ -398,7 +398,7 @@ void myKeyboardHandler(GLFWwindow* window, int key, int scancode, int action, in
 void deleteObjects(GLFWwindow* window, double tDelta)
 {
 	GameObjectCollection bullet = getObjectCollection("bullet");
-	
+
 	for (int i = 0; i < bullet.objectCount; i++)
 	{
 		if (bullet.objectArray[i]->position.y < -getViewplaneHeight() || bullet.objectArray[i]->position.y > getViewplaneHeight() || bullet.objectArray[i]->position.x < -getViewplaneWidth() || bullet.objectArray[i]->position.x > getViewplaneWidth())
@@ -407,6 +407,8 @@ void deleteObjects(GLFWwindow* window, double tDelta)
 			printf("bullet delete\n");
 		}
 	}
+	
+	
 
 	//GameObjectCollection asteroids = getObjectCollection("asteroid");
 	//

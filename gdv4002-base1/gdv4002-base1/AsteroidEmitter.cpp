@@ -13,9 +13,9 @@ AsteroidEmitter::AsteroidEmitter(glm::vec2 initPosition,
 
 	asteroidNumber = 0;
 
-	for (int i = 0; i < 1; i++)
+	for (int i = 0; i < 2; i++)
 	{
-		string path = "Resources\\Textures\\alien01.png";
+		string path = "Resources\\Textures\\asteroid" + to_string(i + 1) + string(".png");
 		asteroid[i] = loadTexture(path.c_str());
 
 		if (asteroid[i] > 0)
@@ -27,7 +27,7 @@ AsteroidEmitter::AsteroidEmitter(glm::vec2 initPosition,
 
 		gen = mt19937(rd());
 
-		spriteDist = uniform_int_distribution<int>(0, 0);
+		spriteDist = uniform_int_distribution<int>(0, 1);
 		normDist = uniform_real_distribution<float>(-1.0f, 1.0f);
 		massDist = uniform_real_distribution<float>(0.005f, 0.05f);
 		scaleDist = uniform_real_distribution<float>(0.1f, 1.0f);
@@ -45,7 +45,7 @@ void AsteroidEmitter::update(double tDelta)
 {
 	emitCounter += (float)tDelta;
 
-	while (emitCounter >= emitTimeInterval)
+	while (emitCounter >= emitTimeInterval && asteroidNumber < 20)
 	{
 		emitCounter -= emitTimeInterval;
 

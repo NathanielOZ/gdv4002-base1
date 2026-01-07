@@ -148,9 +148,9 @@ void Player::update(double tDelta)
 		bulletCounter -= cooldown;
 
 		if (keys.test(Key::SPACE) == true && orientation == glm::radians(0.0f))
-	{
+		{
 		
-			GLuint bulletTexture = loadTexture("Resources\\Textures\\mcblock01.png");
+			GLuint bulletTexture = loadTexture("Resources\\Textures\\bullet1.png");
 			Bullet* bullet = new Bullet(glm::vec2(position),
 				orientation,
 				glm::vec2(0.5f, 0.5f), // Size
@@ -166,59 +166,58 @@ void Player::update(double tDelta)
 			addObject(key.c_str(), bullet);
 		
 		
-	}
+		}
 
-	else if (keys.test(Key::SPACE) == true && orientation == glm::radians(180.0f))
-	{
-		GLuint bulletTexture = loadTexture("Resources\\Textures\\mcblock01.png");
-		Bullet* bullet = new Bullet(glm::vec2(position),
-			orientation,
-			glm::vec2(0.5f, 0.5f), // Size
-			bulletTexture,
-			1.0f,// Mass
-			glm::vec2(-5.0f, 0.0f));
+		else if (keys.test(Key::SPACE) == true && orientation == glm::radians(180.0f))
+		{
+			GLuint bulletTexture = loadTexture("Resources\\Textures\\bullet1.png");
+			Bullet* bullet = new Bullet(glm::vec2(position),
+				orientation,
+				glm::vec2(0.5f, 0.5f), // Size
+				bulletTexture,
+				1.0f,// Mass
+				glm::vec2(-5.0f, 0.0f));
 
-		if (bulletNumber > 0)
-			key += to_string(bulletNumber);
-		bulletNumber++;
+			if (bulletNumber > 0)
+				key += to_string(bulletNumber);
+			bulletNumber++;
 
-		addObject(key.c_str(), bullet);
-	}
+			addObject(key.c_str(), bullet);
+		}
 
-	if (keys.test(Key::SPACE) == true && orientation == glm::radians(90.0f))
-	{
-		GLuint bulletTexture = loadTexture("Resources\\Textures\\mcblock01.png");
-		Bullet* bullet = new Bullet(glm::vec2(position),
-			orientation,
-			glm::vec2(0.5f, 0.5f), // Size
-			bulletTexture,
-			1.0f,// Mass
-			glm::vec2(0.0f, 5.0f));
+		if (keys.test(Key::SPACE) == true && orientation == glm::radians(90.0f))
+		{
+			GLuint bulletTexture = loadTexture("Resources\\Textures\\bullet1.png");
+			Bullet* bullet = new Bullet(glm::vec2(position),
+				orientation,
+				glm::vec2(0.5f, 0.5f), // Size
+				bulletTexture,
+				1.0f,// Mass
+				glm::vec2(0.0f, 5.0f));
 
-		if (bulletNumber > 0)
-			key += to_string(bulletNumber);
-		bulletNumber++;
+			if (bulletNumber > 0)
+				key += to_string(bulletNumber);
+			bulletNumber++;
 
-		addObject(key.c_str(), bullet);
-	}
+			addObject(key.c_str(), bullet);
+		}
 
-	if (keys.test(Key::SPACE) == true && orientation == glm::radians(-90.0f))
-	{
-		GLuint bulletTexture = loadTexture("Resources\\Textures\\mcblock01.png");
-		Bullet* bullet = new Bullet(glm::vec2(position),
-			orientation,
-			glm::vec2(0.5f, 0.5f), // Size
-			bulletTexture,
-			1.0f,// Mass
-			glm::vec2(0.0f, -5.0f));
+		if (keys.test(Key::SPACE) == true && orientation == glm::radians(-90.0f))
+		{
+			GLuint bulletTexture = loadTexture("Resources\\Textures\\bullet1.png");
+			Bullet* bullet = new Bullet(glm::vec2(position),
+				orientation,
+				glm::vec2(0.5f, 0.5f), // Size
+				bulletTexture,
+				1.0f,// Mass
+				glm::vec2(0.0f, -5.0f));
 
-		if (bulletNumber > 0)
-			key += to_string(bulletNumber);
-		bulletNumber++;
+			if (bulletNumber > 0)
+				key += to_string(bulletNumber);
+			bulletNumber++;
 
-		addObject(key.c_str(), bullet);
-	}
-
+			addObject(key.c_str(), bullet);
+		}
 	}
 	
 

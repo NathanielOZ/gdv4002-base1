@@ -44,16 +44,16 @@ void Asteroid::update(double tDelta)
 	/* Velocity clamp */
 
 	if (xVelocity > maxVelocity)// check if X velocity is higher than maxVelocity
-		xVelocity == maxVelocity;// if X velocity goes higher than maxVelocity change x velocity to maxVelocity
+		xVelocity = maxVelocity;// if X velocity goes higher than maxVelocity change x velocity to maxVelocity
 	
 	else if (xVelocity < minVelocity)
-		xVelocity == minVelocity;
+		xVelocity = minVelocity;
 	
 	if (yVelocity > maxVelocity)
-		yVelocity == maxVelocity;
+		yVelocity = maxVelocity;
 	
 	else if (yVelocity < minVelocity)
-		yVelocity == minVelocity;
+		yVelocity = minVelocity;
 	
 	
 	velocity = glm::vec2(xVelocity, yVelocity);// combinding the x and y velocity into one
@@ -62,13 +62,13 @@ void Asteroid::update(double tDelta)
 	
 	orientation += angleChangePerSecond * (float)tDelta; // Non-physics bit for rotation
 
-	//if (position.y < -getViewplaneHeight() / 2.1f)
-	//{
-	//	position.y = getViewplaneHeight() / 2.1f;
-	//}
+	if (position.y < -getViewplaneHeight() / 1.5f)
+	{
+		position.y = getViewplaneHeight() / 2.0f;
+	}
 	if (position.y > getViewplaneHeight() / 1.5f)
 	{
-		position.y = -getViewplaneHeight() / 2.1f;
+		position.y = -getViewplaneHeight() / 2.0f;
 	}
 	if (position.x < -getViewplaneWidth() / 1.5f)
 	{

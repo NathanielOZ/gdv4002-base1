@@ -1,4 +1,5 @@
 #include "Bullet.h"
+#include "Engine.h"
 
 extern glm::vec2 gravity;
 
@@ -30,5 +31,4 @@ void Bullet::update(double tDelta)
 
 	/* integate to get new posistion */
 	position = position + (velocity * (float)tDelta);
-
 }
